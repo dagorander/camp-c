@@ -2,6 +2,8 @@
 
 int main()
 {
+    init_ui();
+
     splash_screen();
 
     second_screen();
