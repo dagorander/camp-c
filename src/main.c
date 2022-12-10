@@ -2,13 +2,12 @@
 
 int main()
 {
-    init_ui();
+    ui_init();
 
-    splash_screen();
+    ui_splash_screen();
 
     second_screen();
 
-    end_curses();
-    
+    ui_teardown();
     return 0;
 }

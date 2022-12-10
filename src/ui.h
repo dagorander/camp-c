@@ -1,9 +1,11 @@
 #ifndef MODULE_UI
 #define MODULE_UI
 
-void init_ui();
-void splash_screen();
-void end_curses();
+// Main management functions
+void ui_init();
+void ui_teardown();
+
+void ui_splash_screen();
 
 // Temp functions
 void second_screen();

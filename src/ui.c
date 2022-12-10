@@ -1,10 +1,15 @@
 #include <ncurses.h>
 #include <string.h>
 
-void init_ui()
+void ui_init()
 {
     initscr();
     curs_set(0);
+}
+
+void ui_teardown()
+{
+    endwin();
 }
 
 void draw_rectangle(int x1, int y1, int x2, int y2)
@@ -20,23 +25,57 @@ void draw_rectangle(int x1, int y1, int x2, int y2)
     mvaddch(y2, x2, ACS_LRCORNER);
 }
 
-void splash_screen() 
+// Assumes we want centering, fix later
+void draw_text_box(int rows, int columns, char text[])
 {
-    char splash_message[]="Camp C";
-    int row, col;
+    int start_x = (((columns-strlen(text))/2)-2);
+    int start_y = ((rows/2)-1);
+    int end_x = (((columns-strlen(text))/2)+strlen(text)+1);
+    int end_y = ((rows/2)+1);
+    int text_start_x = (columns-strlen(text))/2;
+    int text_start_y = rows/2;
 
-    getmaxyx(stdscr, row, col);
-
-    mvprintw(row/2, (col-strlen(splash_message))/2, "%s", splash_message);
-
-    draw_rectangle(4, 4, 8, 8);
-    refresh();
-    getch();
+    draw_rectangle(start_x, start_y, end_x, end_y);
+    mvprintw(text_start_y, text_start_x, "%s", text);
 }
 
-void end_curses()
+// Also prototypes some drawing routines
+void ui_splash_screen() 
 {
-    endwin();
+    char splash_message[]="Camp C";
+    int rows, columns;
+
+    getmaxyx(stdscr, rows, columns);
+
+    // draw_text_box(rows, columns, splash_message);
+
+    // This needs to go to a separate function with prepared vars for args
+    /* draw_rectangle(
+            (((columns-strlen(splash_message))/2)-2),
+            ((rows/2)-1),
+            (((columns-strlen(splash_message))/2)+strlen(splash_message)+1),
+            ((rows/2)+1)
+        ); */
+    // mvprintw(rows/2, (columns-strlen(splash_message))/2, "%s", splash_message);
+    // draw_rectangle(4, 4, 8, 8);
+    
+    draw_text_box(rows, columns, splash_message);
+    refresh();
+    getch();
+
+    char second_message[]="This is the second one.";
+    clear();
+    draw_text_box(rows, columns, second_message);
+    refresh();
+    getch();
+
+    char third_message[]="Short one.";
+    clear();
+    draw_text_box(rows, columns, third_message);
+    refresh();
+    getch();
+    clear();
+
 }
 
 // TEMP TEST FUNCTIONS
