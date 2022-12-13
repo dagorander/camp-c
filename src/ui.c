@@ -1,5 +1,6 @@
 #include <ncurses.h>
 #include <string.h>
+#include <unistd.h> // For sleep?
 
 void ui_init()
 {
@@ -39,6 +40,28 @@ void draw_text_box(int rows, int columns, char text[])
     mvprintw(text_start_y, text_start_x, "%s", text);
 }
 
+void draw_delay_text_box(int rows, int columns, char text[])
+{
+    int start_x = (((columns-strlen(text))/2)-2);
+    int start_y = ((rows/2)-1);
+    int end_x = (((columns-strlen(text))/2)+strlen(text)+1);
+    int end_y = ((rows/2)+1);
+    int text_start_x = (columns-strlen(text))/2;
+    int text_start_y = rows/2;
+    
+    draw_rectangle(start_x, start_y, end_x, end_y);
+    refresh();
+
+    int i;
+    for (i = 0; i < strlen(text); i++) {
+        mvaddch((start_y+1), (start_x+i+2), text[i]);
+        refresh();
+        // TODO: Skip sleep if next char is a space
+        // TODO: Create time.c/time.h and build a nanosleep() wrapper
+        sleep(1);
+    }
+}
+
 // Also prototypes some drawing routines
 void ui_splash_screen() 
 {
@@ -73,6 +96,11 @@ void ui_splash_screen()
     clear();
     draw_text_box(rows, columns, third_message);
     refresh();
+
+    char delay_message[]="This should be typed out slowly.";
+    clear();
+    draw_delay_text_box(rows, columns, delay_message);
+
     getch();
     clear();
 
