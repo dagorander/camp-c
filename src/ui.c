@@ -1,6 +1,7 @@
 #include <ncurses.h>
 #include <string.h>
-#include <unistd.h> // For sleep?
+// #include <unistd.h> // For sleep?
+#include "time.h"
 
 void ui_init()
 {
@@ -57,8 +58,7 @@ void draw_delay_text_box(int rows, int columns, char text[])
         mvaddch((start_y+1), (start_x+i+2), text[i]);
         refresh();
         // TODO: Skip sleep if next char is a space
-        // TODO: Create time.c/time.h and build a nanosleep() wrapper
-        sleep(1);
+        time_sleep(0, 100);
     }
 }
 
