@@ -62,6 +62,53 @@ void draw_delay_text_box(int rows, int columns, char text[])
     }
 }
 
+void draw_multiline_delayed_text_box(int rows, int columns, char text[])
+{
+    int start_x = (((columns-strlen(text))/2)-2);
+    int start_y = ((rows/2)-1);
+    int end_x = (((columns-strlen(text))/2)+strlen(text)+1);
+    int end_y = ((rows/2)+1);
+    int text_start_x = (columns-strlen(text))/2;
+    int text_start_y = rows/2;
+    
+    // Understand how many lines we need before drawing the box
+    // Assuming width of 18 letters for now
+    int box_width = 18;
+    int breakpoints[strlen(text)];
+    int linebreaks;
+    
+    // Find spaces and save their indices
+    int i;
+    int i_modifier;
+    for (i = 0; i < strlen(text); i++) {
+        // if index is space and less than box width
+        // check if next space is over box width
+        // if yes, then save index to breakpoints char array
+        //      and increment linebreaks
+        // set i_modifier to current index
+        // Use i_modifier for all index checks
+        // 
+        // When we run out of strlen(text), add terminator
+    }
+
+    // Actually draw things
+    draw_rectangle(start_x, start_y, (start_x + box_width), (start_y + linebreaks));
+
+    // Draw text and linebreak when needed
+    // Reinitialised vars should travel to new things
+    i = 0; // iterator for the for loop
+    i_modifier = 0; // which point in breakpoints are we in?
+    int y_modifier = 0; // to increment y-pos
+    int x_position = start_x; // where are we in x?
+    for (i = 0; i < strlen(text); i++) {
+        // check if i is in current breakpoints[i_modifier]
+        // if so, increment y_modifier
+        // now print with x_position and (start_y+y_modifier)
+        // delay using time_sleep() unless next is space
+        //      ...maybe also if newline?
+    }
+}
+
 // Also prototypes some drawing routines
 void ui_splash_screen() 
 {
@@ -81,6 +128,8 @@ void ui_splash_screen()
         ); */
     // mvprintw(rows/2, (columns-strlen(splash_message))/2, "%s", splash_message);
     // draw_rectangle(4, 4, 8, 8);
+
+    // Make struct for text box configs to avoid repeating coords
     
     draw_text_box(rows, columns, splash_message);
     refresh();
@@ -100,6 +149,10 @@ void ui_splash_screen()
     char delay_message[]="This should be typed out slowly.";
     clear();
     draw_delay_text_box(rows, columns, delay_message);
+
+    char multiline_message[]="This should go slownly on multiple lines.";
+    clear();
+    draw_multiline_delayed_text_box(rows, columns, delay_message);
 
     getch();
     clear();
