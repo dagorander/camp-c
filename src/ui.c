@@ -73,39 +73,52 @@ void draw_multiline_delayed_text_box(int rows, int columns, char text[])
     
     // Understand how many lines we need before drawing the box
     // Assuming width of 18 letters for now
-    int box_width = 18;
-    int breakpoints[strlen(text)];
-    int linebreaks;
+    int box_width = 18; // Should be taken as argument
+    int newline_locations[strlen(text)];
     
-    // Find spaces and save their indices
+    // Find spaces and check if they need to be a linebreak
     int i;
-    int i_modifier;
+    int i_modified;
+    int previous_space_index = 0;
+    int previous_breakpoint_index = 0;
+    int linebreaks;
     for (i = 0; i < strlen(text); i++) {
-        // if index is space and less than box width
-        // check if next space is over box width
-        // if yes, then save index to breakpoints char array
-        //      and increment linebreaks
-        // set i_modifier to current index
-        // Use i_modifier for all index checks
-        // 
-        // When we run out of strlen(text), add terminator
+        if (text[i] != ' ') {
+            continue;
+        }
+        if (i < (previous_breakpoint_index + box_width)) {
+            previous_space_index = i;
+            continue;
+        }
+        // BUG: We're making linebreaks for every space after the first
+        //      because we're not modifying the test to reset width.
+        newline_locations[linebreaks] = i;
+        linebreaks += 1;
     }
 
     // Actually draw things
-    draw_rectangle(start_x, start_y, (start_x + box_width), (start_y + linebreaks));
+    draw_rectangle(start_x, start_y, (start_x + box_width + 6), (start_y + linebreaks + 2));
+    refresh();
 
-    // Draw text and linebreak when needed
-    // Reinitialised vars should travel to new things
-    i = 0; // iterator for the for loop
-    i_modifier = 0; // which point in breakpoints are we in?
-    int y_modifier = 0; // to increment y-pos
-    int x_position = start_x; // where are we in x?
+    int y_position = (start_y+1);
+    int x_position = (start_x+2);
+    int current_line = 0;
+    
     for (i = 0; i < strlen(text); i++) {
-        // check if i is in current breakpoints[i_modifier]
-        // if so, increment y_modifier
-        // now print with x_position and (start_y+y_modifier)
-        // delay using time_sleep() unless next is space
-        //      ...maybe also if newline?
+        mvaddch(y_position, x_position, text[i]);
+        refresh();
+        x_position += 1;
+        if (text[i+1] != ' ') {
+            time_sleep(0, 100);
+        }
+        if (i != newline_locations[current_line]) {
+            continue;
+        }
+        if (i == newline_locations[current_line]) {
+            current_line += 1;
+            y_position += 1;
+            x_position = (start_x+2);
+        }
     }
 }
 
@@ -150,9 +163,9 @@ void ui_splash_screen()
     clear();
     draw_delay_text_box(rows, columns, delay_message);
 
-    char multiline_message[]="This should go slownly on multiple lines.";
+    char multiline_message[]="This should go slowly on multiple lines. Preferably without breaking in weird ways.";
     clear();
-    draw_multiline_delayed_text_box(rows, columns, delay_message);
+    draw_multiline_delayed_text_box(rows, columns, multiline_message);
 
     getch();
     clear();
