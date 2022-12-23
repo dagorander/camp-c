@@ -79,7 +79,6 @@ void draw_multiline_delayed_text_box(int rows, int columns, char text[])
 
     int start_x = 10;
     int start_y = 10;
-
     
     // Understand how many lines we need before drawing the box
     // Assuming width of 18 letters for now
