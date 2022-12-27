@@ -1,15 +1,2 @@
-INTERFACE PROTOTYPE:
-
-    TODO: Put that here
-
-
-IDENTIFIED ELEMENTS:
-
-    TODO: Describe them here
-
-
-ELEMENT LIST OF NEEDS:
-
-    TODO: For each element here, list
-        WHAT IT NEEDS (gui widgets and data structs)
-        HOW TO MAKE THEM (expected structs and functions/files)
+TEXTBOXES
+    described in textbox_object_description

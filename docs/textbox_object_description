@@ -1,0 +1,32 @@
+
+PROPERTIES NEEDED IN THE STRUCT:
+
+Borders:
+    Yes/No/Transparent
+    List
+        Coordinated corners?
+
+Positions:
+    Width
+    Internal border
+    Start X pos
+    Start Y pos
+
+Text Modes:
+    Instant or delayed
+        (If 0, is instant, otherwise decode to sec/millisec)
+    Stat mode [ LOREM IPSUM:     234 ]
+        Yes/No
+        Description Text
+        Numeric
+    Quote mode? [Text, blank line, right-aligned name]
+
+Content:
+    Text
+    Numbers
+    Quotee [ extra line, end of it, name]
+
+Highlights:
+    Bold or not
+
+
